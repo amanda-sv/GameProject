@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+}
+
+#map {
+    height: 640px;
+    width: 800px;
+}
+
+#mapImg {
+    height: 640px;
+    width: 800px;
+}
+
+#hero {
+    background-color: red;
+    background: url('images/princessFront.png');
+    position: absolute;
+    z-index: 1;
+}
+
+#obstacle {
+    background-color: black;
+}
+/* wasn't created yet */
+#princess {
+    background-color: red;
+    background: url('images/princessFront.png');
+    position: absolute;
+    z-index: 1;
+}
+
+#teleport {
+    background-color: lightblue;
+    position: absolute;
+}
+

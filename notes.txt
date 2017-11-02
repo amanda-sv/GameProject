@@ -1,0 +1,3 @@
+01/11/2017
+Estou tentando fazer os SQM de teleport funcionarem.
+Tenho que mudar para que a imagem da cidade mude do background do body para background da div #mapImage, filha da div #map
