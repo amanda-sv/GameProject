@@ -9,7 +9,7 @@ var Game = function () {
     var MAP_HEIGHT = 640;
     var MAP_WIDTH = 800;
     var obstaclesOnMap = [];
-    var teleportsOnMap = []
+    var teleportsOnMap = [];
     // Mapas: cityCastle mainCity forest1
     var currentMap = 'mainCity';
     var nextMap = [];
