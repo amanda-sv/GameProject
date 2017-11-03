@@ -20,7 +20,8 @@ body {
 }
 
 #obstacle {
-    background-color: black;
+    border: 1px solid red;
+    background-color: #ff000057;
 }
 /* wasn't created yet */
 #princess {
@@ -31,7 +32,8 @@ body {
 }
 
 #teleport {
-    background-color: lightblue;
+    border: 1px solid lightblue;
+    background-color: #008cff57;
     position: absolute;
 }
 

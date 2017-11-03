@@ -1,3 +1,6 @@
 01/11/2017
 Estou tentando fazer os SQM de teleport funcionarem.
 Tenho que mudar para que a imagem da cidade mude do background do body para background da div #mapImage, filha da div #map
+
+02/11/2017
+Consegui fazer o teleport funcionar, mas as sprites da mainCity ainda estão na tela

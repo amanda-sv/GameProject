@@ -8,15 +8,15 @@ var Game = function () {
     var SQM_SIZE = 32;
     var MAP_HEIGHT = 640;
     var MAP_WIDTH = 800;
+    var PLAYER_SPEED = 60;
     var obstaclesOnMap = [];
     var teleportsOnMap = [];
     // Mapas: cityCastle mainCity forest1
     var currentMap = 'mainCity';
-    var nextMap = [];
 
     // Variables
     var map = $('#map');
-    var mapImg = $('<div id = "mapImg"/>');
+    var canWalk = true;
 
     // Add sprites to map
     var addSpriteToMap = function (spriteName, xPos, yPos) {
@@ -61,7 +61,7 @@ var Game = function () {
         for (var i = 0; i < obstaclesOnMap.length; i++) {
             var obstacleLeftPosition = obstaclesOnMap[i].x;
             var obstacleTopPosition = obstaclesOnMap[i].y;
-            if (((nextLeftPosition / 32) == obstacleLeftPosition) && (nextTopPosition / 32) == obstacleTopPosition) {
+            if (((nextLeftPosition / SQM_SIZE) == obstacleLeftPosition) && (nextTopPosition / SQM_SIZE) == obstacleTopPosition) {
                 playerCanWalk = false;
             }
         }
@@ -74,46 +74,73 @@ var Game = function () {
         addSpriteToMap(teleport, xPos, yPos);
     }
 
+    // renderiza um obstaculo
+    var renderObstacle = function (mapElement) {
+        var config = mapElement.config;
+        if (config && config.area) {
+            var areaI = Number(config.area[0]);
+            var areaJ = Number(config.area[1]);
+            for (var i = 0; i < areaI; i++) {
+                for (var j = 0; j < areaJ; j++) {
+                    createObstacle(mapElement.x + i, mapElement.y + j);
+                    obstaclesOnMap.push({ x: mapElement.x + i, y: mapElement.y + j });
+                }
+            }
+        } else {
+            createObstacle(mapElement.x, mapElement.y);
+            obstaclesOnMap.push({ x: mapElement.x, y: mapElement.y });
+        }
+    }
+    // determines the speed of the player walking
+    var walkAnimation = function() {
+        canWalk = false;
+        setTimeout(function() {
+            canWalk = true;
+        }, PLAYER_SPEED);
+    }
+
+    // create map with it's background and elements
+    var renderMap = function (mapName) {
+        var mapObject = maps[mapName];
+        map.append($('<div id="mapImg"/>'));
+        for (var i = 0; i < mapObject.length; i++) {
+            var mapElement = mapObject[i];
+            var config = mapElement.config || {};
+            $('#mapImg').css('background', `url("images/${mapName}.png")`)
+            if (mapElement.type == 'T') {
+                createTeleport(mapElement.x, mapElement.y);
+                teleportsOnMap.push({ x: mapElement.x, y: mapElement.y, toMap: config.toMap, toPos: config.toPosition })
+            }
+            if (mapElement.type == 'O') {
+                renderObstacle(mapElement);
+            }
+        }
+    }
+    // change map when player enters teleport sqm
+    var changeMap = function (nextMapName, newPlayerX, newPlayerY) {
+        obstaclesOnMap = [];
+        teleportsOnMap = [];
+        map.empty();
+        renderMap(nextMapName);
+        createHero(newPlayerX, newPlayerY);
+    }
+
     // When player touches the teleportation point, change map
     var checkTeleport = function (nextLeftPosition, nextTopPosition) {
         for (var i = 0; i < teleportsOnMap.length; i++) {
             var teleportLeftPosition = teleportsOnMap[i].x;
             var teleportTopPosition = teleportsOnMap[i].y;
-            if (((nextLeftPosition / 32) == teleportLeftPosition) && (nextTopPosition / 32) == teleportTopPosition) {
-                console.log(teleportsOnMap[i].toMap); // AQUI DEVE IR A FUNÇÃO QUE FAZ O MAPA MUDAR (O TELEPORT ACONTECER)
+            if (((nextLeftPosition / SQM_SIZE) == teleportLeftPosition) && (nextTopPosition / SQM_SIZE) == teleportTopPosition) {
+                // AQUI DEVE IR A FUNÇÃO QUE FAZ O MAPA MUDAR (O TELEPORT ACONTECER)
+                changeMap(teleportsOnMap[i].toMap, teleportsOnMap[i].toPos.x, teleportsOnMap[i].toPos.y);
             }
         }
-    }
-
-    // create map with it's background and elements
-    var createMap = function (mapName) {
-        var mapObject = maps[mapName];
-        map.append(mapImg);
-        for (var i = 0; i < mapObject.length; i++) {
-            var mapElement = mapObject[i];
-            $('#mapImg').css('background', `url("images/${mapName}.png")`)
-            if (mapElement.type == 'T') {
-                createTeleport(mapElement.x, mapElement.y);
-                configElement = mapElement.config;
-                teleportsOnMap.push({ x: mapElement.x, y: mapElement.y, toMap: configElement.toMap })
-                nextMap.push({ toMap: configElement.toMap, toPosX: configElement.toPosition.x, toPosY: configElement.toPosition.y })
-            }
-            if (mapElement.type == 'O') {
-                createObstacle(mapElement.x, mapElement.y);
-                obstaclesOnMap.push({ x: mapElement.x, y: mapElement.y });
-            }
-        }
-    }
-    // change map when player enters teleport sqm
-    var changeMap = function (nextMapName, nextPlayerX, nextPlayerY) {
-        createMap(nextMapName);
-        createHero(nextPlayerX, nextPlayerY);
     }
 
     // draw map created and determines hero position
     var drawMap = function () {
         //map.empty();
-        createMap(currentMap);
+        renderMap(currentMap);
         createHero(1, 18);
     }
 
@@ -123,6 +150,7 @@ var Game = function () {
     // Function that allows moving hero using arrow keys
     //   It means something like 'when event keydown happens in document, do this { ... }'
     $(document).keydown(function (event) {
+        if(!canWalk) { return; }
         var hero = $('#hero');
         var currentLeftPosition = Helpful.removePxTurnIntoNumber($('#hero').css('left'));
         var currentTopPosition = Helpful.removePxTurnIntoNumber($('#hero').css('top'));
@@ -142,6 +170,7 @@ var Game = function () {
                 if (!(nextLeftPosition < 0) && checkCollision(nextLeftPosition, currentTopPosition)) {
                     addLeft(-SQM_SIZE);
                     Helpful.showPlayerPosition(nextLeftPosition, currentTopPosition);
+                    walkAnimation();
                 }
                 break;
             case 38: //up
@@ -150,6 +179,7 @@ var Game = function () {
                 if (!(nextTopPosition < 0) && checkCollision(currentLeftPosition, nextTopPosition)) {
                     addTop(-SQM_SIZE);
                     Helpful.showPlayerPosition(currentLeftPosition, nextTopPosition);
+                    walkAnimation();
                 }
                 break;
             case 39: //right
@@ -158,6 +188,7 @@ var Game = function () {
                 if (!(nextRightPosition >= MAP_WIDTH) && checkCollision(nextRightPosition, currentTopPosition)) {
                     addLeft(SQM_SIZE);
                     Helpful.showPlayerPosition(nextRightPosition, currentTopPosition);
+                    walkAnimation();
                 }
                 break;
             case 40: //down
@@ -166,13 +197,14 @@ var Game = function () {
                 if (!(nextDownPosition >= MAP_HEIGHT) && checkCollision(currentLeftPosition, nextDownPosition)) {
                     addTop(SQM_SIZE);
                     Helpful.showPlayerPosition(currentLeftPosition, nextDownPosition);
+                    walkAnimation();
                 }
                 break;
         }
     });
 
     return {
-        createMap: createMap
+        renderMap: renderMap
     }
 }
 
