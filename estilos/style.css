@@ -1,0 +1,177 @@
+body {
+    margin: 0;
+}
+
+#hud {
+    height: 840px;
+    width: 1060px;
+    position: absolute;
+    background-color: lightblue;
+}
+
+#textbox {
+    height: 180px;
+    width: 800px;
+    top: 650px;
+    position: absolute;
+    background-image: url(../images/hud/blanktextbox.png);
+    background-repeat: no-repeat;
+}
+
+#righthud {
+    width: 260px;
+    height: 840px;
+    position: absolute;
+    background-color: lightskyblue;
+    left: 800px;
+    top: 0;
+}
+
+#playerStatus {
+    width: 260px;
+    height: 190px;
+    background-color: darkslategray;
+}
+
+#playerStatus img {
+    margin: 10px;
+    margin-left: 55px;
+}
+
+#healthBar {
+    position: absolute;
+    margin-left: 50px;
+}
+
+#healthText {
+    margin-left: 105px;
+    color: black;
+    font-weight: bold;
+    position: absolute;
+}
+
+#level {
+    width: 260px;
+    height: 25px;
+    position: absolute;
+    top: 150px;
+    margin-left: 57px;
+}
+
+#level h3 {
+    position: absolute;
+    color: antiquewhite;
+    margin: 0;
+    margin-top: 1px;
+    margin-left: 20px;
+}
+
+#levelText {
+    margin-left: inherit;
+}
+
+#cityNameDisplay {
+    max-width: 260px;
+    background-color: lightseagreen;
+    text-align: center;
+    font-weight: bold;
+}
+
+#currentCityName {
+    margin-left: 5px;
+}
+
+#inventory {
+    width: 197px;
+    height: 180px;
+    background-color: midnightblue;
+    margin: 0 auto;
+    margin-top: 10px;
+    overflow-y: scroll;
+}
+
+.inventoryItem {
+    position: relative;
+    background-color: gray;
+    width: 32px;
+    height: 32px;
+    margin: 2px;
+    float: left;
+}
+
+h2 {
+    position: relative;
+    top: 20px;
+    left: 60px;
+    text-transform: capitalize;
+}
+
+#textbox p {
+    position: relative;
+    top: 5px;
+    left: 60px;
+    text-transform: capitalize;
+    max-width: 680px;
+    word-wrap: break-word;
+}
+
+#map {
+    height: 640px;
+    width: 800px;
+}
+
+#mapImg {
+    height: 640px;
+    width: 800px;
+    position: absolute;
+}
+
+#hero {
+    background-image: url('../images/princessFront.png');
+    position: absolute;
+    z-index: 1;
+}
+
+/* wasn't created yet */
+#princess {
+    background-color: red;
+    background: url('../images/princessFront.png');
+    position: absolute;
+    z-index: 1;
+}
+
+#teleport {
+    border: 1px solid lightblue;
+    background-color: #008cff57;
+    position: absolute;
+}
+
+.monsterSelected {
+    border: 1px solid grey;
+    background-color: #80808069;
+}
+
+.obstacle {
+    border: 1px solid red;
+    background-color: #ff000057;
+}
+
+.honey, .item-mel {
+    border: 0;
+    background-image: url('../images/honey.png');
+    background-size: cover;
+}
+
+#context {
+    width: 100px;
+    height: 150px;
+    background-color: #a52a2a85;
+    margin-left: 16px;
+    margin-top: 16px;
+    position: absolute;
+    z-index: 5;
+}
+
+#context p {
+    padding:10px;
+}

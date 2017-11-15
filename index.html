@@ -4,19 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Joguinho</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="estilos/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
-    <div id='map'>
+    <div id='hud'>
+        <div id='map'></div>
+        <div id='textbox'></div>
+        <div id='righthud'>
+            <div id='playerStatus'>
+                <div>
+                    <img id="playerImage" width="150" height="100" src="images/princesaCaroco.png"></img>
+                </div>
+                <progress id='healthBar' value="100" max="100"></progress>
+                <span id="healthText">
+                    <span id="playerLife">100</span>/100</span>
+                <div id="level">
+                    <h3>LEVEL:
+                        <span id="levelText"> 0 </span>
+                    </h3>
+                </div>
+            </div>
+            <div id="cityNameDisplay">
+                <span>City: </span>
+                <span id="currentCityName">Main City</span>
+            </div>
+            <div id="inventory">
 
+            </div>
+        </div>
     </div>
 </body>
 
-<script src="helpful.js" type="text/javascript"></script>
-<script src="maps.js" type="text/javascript"></script>
-<script src="game.js" type="text/javascript"></script>
-<script src="battle.js" type="text/javascript"></script>
+<script src="scripts/constants.js" type="text/javascript"></script>
+<script src="scripts/helpful.js" type="text/javascript"></script>
+<script src="scripts/animations.js" type="text/javascript"></script>
+<script src="scripts/maps.js" type="text/javascript"></script>
+<script src="scripts/hud.js" type="text/javascript"></script>
+<script src="scripts/inventory.js" type="text/javascript"></script>
+<script src="scripts/player.js" type="text/javascript"></script>
+<script src="scripts/monster.js" type="text/javascript"></script>
+<script src="scripts/game/gameEvents.js" type="text/javascript"></script>
+<script src="scripts/game/game.js" type="text/javascript"></script>
+<script src="scripts/battle.js" type="text/javascript"></script>
 
 </html>
